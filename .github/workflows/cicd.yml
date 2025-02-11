@@ -31,10 +31,10 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-java-app:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/sscicd:latest .
 
       - name: Push Docker Image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/my-java-app:latest
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/sscicd:latest
 
   deploy:
     needs: build
@@ -48,7 +48,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            docker stop my-java-app || true
-            docker rm my-java-app || true
-            docker pull ${{ secrets.DOCKER_USERNAME }}/my-java-app:latest
-            docker run -d --name my-java-app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/my-java-app:latest
+            docker stop sscicd || true
+            docker rm sscicd || true
+            docker pull ${{ secrets.DOCKER_USERNAME }}/sscicd:latest
+            docker run -d --name sscicd -p 3934:3934 ${{ secrets.DOCKER_USERNAME }}/sscicd:latest
